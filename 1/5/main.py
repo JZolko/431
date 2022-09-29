@@ -7,21 +7,16 @@ for test_idx in range(num_tests):
     m = int(line[1]) # Gallons required to reach a full charge
     c = int(line[2]) # Number of fuel cells that can be combined
 
-    # get full number of cells that can be made
+    miles = n // m
+    fuel_cells = n//m
+    current_cells = 0
 
-    # get number of cells that can be made with remainer cells
-
-    miles = 0
-
-    made_fuel_cells = n // m
-    miles += made_fuel_cells
-    
-    remainder = made_fuel_cells % c if made_fuel_cells > c else 0
-    
-    while made_fuel_cells >= 0:
-        miles += (made_fuel_cells - remainder) // c
-        remainder = made_fuel_cells % c if made_fuel_cells > c else 0
-        made_fuel_cells = (made_fuel_cells - remainder) // c
+    while fuel_cells > 0:
+        current_cells += 1
+        fuel_cells -= 1
+        if current_cells == c:
+            fuel_cells += 1
+            miles += 1
+            current_cells = 0
 
     print(miles)
-

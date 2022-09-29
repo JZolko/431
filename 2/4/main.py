@@ -1,11 +1,11 @@
-from heapq import heappush, heappop, heapify
+from bisect import bisect, insort
+
+
 def main():
 
-    minHeap = []
-    maxHeap = []
+    values = []
+    dic = {}
     curr_median = 0
-    minValues = {}
-    maxValues = {}
 
     N = int(input())
 
@@ -15,27 +15,45 @@ def main():
         value = int(line[1])
 
         if operation == "a":
-            if value > curr_median:
-                heappush(maxHeap, -value)
-                maxValues[value] = 1 if maxValues.get(value) is None else maxValues[value] + 1
+            if dic.get(value) is not None:
+                dic[value] += 1
             else:
-                heappush(minHeap, value)
-                minValues[value] = 1 if minValues.get(value) is None else minValues[value] + 1
+                dic[value] = 1
+
+            insort(values, value)
+            if len(values) % 2:
+                curr_median = values[len(values) // 2]
+            else:
+                out = (values[len(values) // 2] + values[len(values) // 2 - 1]) / 2.0
+                if -0.5 < out - int(out) < 0.5:
+                    curr_median = int(out)
+                else:
+                    curr_median = out
+
         elif operation == "r":
-            if minValues.get(value) is not None and minValues[value] > 0:
-                minValues[value] -= 1
-                heappop(minHeap, value)
-            elif maxValues.get(value) is not None and maxValues[value] > 0:
-                maxValues[value] -= 1
-                heappop(maxHeap, -value)
+            if dic.get(value) is not None and dic[value] > 0:
+                values.remove(value)
+                dic[value] -= 1
+                if len(values) % 2 and values:
+                    out = values[len(values) // 2]
+                    if -0.5 < out - int(out) < 0.5:
+                        curr_median = int(out)
+                    else:
+                        curr_median = out
+
+                elif not len(values) % 2 and values:
+                    out = (values[len(values) // 2] + values[len(values) // 2 - 1]) / 2.0
+                    if -0.5 < out - int(out) < 0.5:
+                        curr_median = int(out)
+                    else:
+                        curr_median = out
+                else:
+                    print("Wrong!")
+                    continue
+
             else:
                 print("Wrong!")
                 continue
-
-        if len(minHeap) == len(maxHeap):
-            curr_median = (minHeap[0] + -maxHeap[0]) / 2
-        else:
-            -maxHeap[0]
 
         print(curr_median)
 
