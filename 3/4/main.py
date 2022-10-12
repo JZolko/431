@@ -13,7 +13,11 @@ def main():
     for i in range(len(stuck)):
         value += possible_dict[stuck[i]]
 
-    print(possible[(len(possible) + curr_agent) % len(possible)])
+    # sum + x % 5 = agent number
+    for i in range(len(possible)):
+        if (value + i) % num_darts == curr_agent:
+            print(possible[i])
+            return
 
 
 if __name__ == "__main__":

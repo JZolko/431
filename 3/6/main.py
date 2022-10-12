@@ -89,13 +89,11 @@ class BloomFilter(object):
             self.bits.flush()
             self.bits.close()
 
-
 def main():
     m = int(input().strip())
-    v = -90 * log(0.01) / log(2)**2
-    k = int(v / m * log(2))
-    #print(k)
-    bf = BloomFilter(m, k)
+
+    bf = BloomFilter(m * 15, 8)
+
     for value in range(m):
         bf.add(str(input().strip()))
 
@@ -105,8 +103,8 @@ def main():
         value = str(input().strip())
         if bf.contains(value):
             doubles += 1
-    print(doubles // 2)
 
+    print(doubles)
 
 if __name__ == "__main__":
     main()
