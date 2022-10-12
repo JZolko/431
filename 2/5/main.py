@@ -1,4 +1,4 @@
-
+from heapq import heappush, heappop, heapify
 
 def scheduler(tasks):
 
