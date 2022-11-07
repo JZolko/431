@@ -1,4 +1,6 @@
+import sys
 
+sys.setrecursionlimit(100_000)
 
 
 def NoAdjacentSum(arr, i, n):
