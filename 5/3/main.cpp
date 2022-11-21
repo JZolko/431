@@ -1,50 +1,55 @@
 #include <vector>
 #include <iostream>
+#include <bits/stdc++.h>
+
 
 
 
 int main(){
-
-	// get an int input from the user
-	int number_of_test_cases;
-    int brick_types, target_length;
+	
+	const int64_t SOME_REALLY_BIG_NUMBER = 1000000009;
+	
+	int64_t number_of_test_cases;
+    int64_t brick_types, target_length;
 
 	std::cin >> number_of_test_cases;
 
 
-    for(int first = 0; first < number_of_test_cases; first++){
-        // get an int pair from user
+    for(int64_t first = 0; first < number_of_test_cases; first++){
+
         std::cin >> brick_types >> target_length;
-        // make an int vector of size N
-        std::vector<int> bricks;
-        for(int second = 0; second < brick_types; second++){
-            // add an int to the vector
-            int temp;
+
+        int64_t bricks[brick_types];
+        for(int64_t brick = 0; brick < brick_types; brick++){
+
+            int64_t temp;
             std::cin >> temp;
-            bricks.push_back(temp);
+            bricks[brick] = temp;
         }
 
-        // make a vector of 0s with size L + 1
-        std::vector<int> table;
-        for(int zeros = 0; zeros < target_length + 1; zeros++)
-            table.push_back(0);
+       	
+		/** let the fun begin **/
+		int64_t table[target_length + 1];
+		memset(table, 0, sizeof(table));
 
         table[0] = 1;
 
-        for(int i = 0; i < brick_types; i++)
-            for(int j = table[i]; j <= target_length ; j--)
-                table[j] = table[j] + table[j - bricks[i]];
 
-        if(table[-1])
-            std::cout << table[-1] % 1000000009 << std::endl;
-
+        for(int64_t i = 1; i <= target_length; i++)
+			for(auto brick : bricks)
+				if(i - brick >= 0)
+	            	table[i] += table[i - brick] % SOME_REALLY_BIG_NUMBER;
 
 
+        std::cout << table[target_length] % SOME_REALLY_BIG_NUMBER << std::endl;
+		//std::cout << std::endl;
+		//std::cout << table[target_length] << std::endl;
 
+
+		//for (int64_t i = 0; i <= target_length; i++)
+		//	std::cout << table[i] << " ";
+		//std::cout << std::endl;
     }
-
-
-
-
 	return 0;
+	/** There was no fun to be had **/
 }
